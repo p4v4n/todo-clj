@@ -2,7 +2,9 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [defroutes GET]]
-            [compojure.route :refer [not-found]]))
+            [compojure.route :refer [not-found]]
+            [ring.handler.dump :refer [handle-dump]])
+  (:gen-class))
 
 (defn hello [req]
   {:status 200
@@ -11,6 +13,7 @@
 
 (defroutes routes
   (GET "/" [] hello)
+  (GET "/request" [] handle-dump)
   (not-found "Page not found."))
 
 (defn -main [port]
