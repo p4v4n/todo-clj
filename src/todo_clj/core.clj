@@ -1,6 +1,7 @@
 (ns todo-clj.core
   (:require [todo-clj.items.modelt :as items]
-            [todo-clj.items.handler :refer [handle-index-items]])
+            [todo-clj.items.handler :refer [handle-index-items
+                                            handle-create-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -16,8 +17,9 @@
 
 (defroutes routes
   (GET "/" [] hello)
-  (GET "/request" [] handle-dump)
+  (ANY "/request" [] handle-dump)
   (GET "/items" [] handle-index-items)
+  (POST "/items" [] handle-create-item)
   (not-found "Page not found."))
 
 (defn wrap-server [hdlr]
