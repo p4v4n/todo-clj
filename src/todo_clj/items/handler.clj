@@ -1,5 +1,6 @@
 (ns todo-clj.items.handler
-  (:require [todo-clj.items.modelt :as t]))
+  (:require [todo-clj.items.modelt :as t]
+            [todo-clj.items.view :refer [items-page]]))
 
 (defn item-names [items]
   (into [] (for [[k v] items] (:name v))))
@@ -8,13 +9,7 @@
   (let [items (t/read-items)]
     {:status 200
      :headers {}
-     :body (str "<html><head></head><body><div>"
-                (item-names  items)
-                "</div><form method=\"POST\" action=\"/items\">"
-                "<input type=\"text\" name=\"name\" placeholder=\"name\">"
-                "<input type=\"text\" name=\"description\" placeholder=\"description\">"
-                "<input type=\"submit\">"
-                "</div></body></html>")}))
+     :body (items-page items)}))
 
 (defn handle-create-item [req]
   (let [name (get-in req [:params "name"])
