@@ -2,11 +2,11 @@
   (:require [todo-clj.items.modelt :as t]
             [todo-clj.items.view :refer [items-page]]))
 
-(defn item-names [items]
-  (into [] (for [[k v] items] (:name v))))
+(defn item-vec [items]
+  (into [] (for [[k v] items] v)))
 
 (defn handle-index-items [req]
-  (let [items (t/read-items)]
+  (let [items (item-vec  (t/read-items))]
     {:status 200
      :headers {}
      :body (items-page items)}))
