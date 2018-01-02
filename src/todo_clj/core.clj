@@ -2,7 +2,8 @@
   (:require [todo-clj.items.modelt :as items]
             [todo-clj.items.handler :refer [handle-index-items
                                             handle-create-item
-                                            handle-delete-item]])
+                                            handle-delete-item
+                                            handle-update-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -23,6 +24,7 @@
   (ANY "/request" [] handle-dump)
   (GET "/items" [] handle-index-items)
   (POST "/items" [] handle-create-item)
+  (POST "/update/:item-id" [] handle-update-item)
   (DELETE "/items/:item-id" []  handle-delete-item)
   (not-found "Page not found."))
 
