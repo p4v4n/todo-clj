@@ -20,11 +20,13 @@
 
 (defn create-item [name description]
   (if (and (name-valid? name) (description-valid? description))
-    (swap! t-db assoc (generate-uuid)
-           {:name name
-            :description description
-            :checked false
-            :date (date-now)})))
+    (let [uid (generate-uuid)]
+      (swap! t-db assoc uid
+             {:name name
+              :description description
+              :checked false
+              :date (date-now)
+              :id uid}))))
 
 (defn update-item [id]
   (swap! t-db update-in [id :checked] not))

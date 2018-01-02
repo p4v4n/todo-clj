@@ -18,3 +18,15 @@
     {:status 302
      :headers {"Location" "/items"}
      :body ""}))
+
+(defn handle-delete-item [req]
+  (prn req)
+  (let [item-id  (:item-id (:route-params req))
+        exists? (t/delete-item item-id)]
+    (if exists?
+      {:status 302
+       :headers {"Location" "/items"}
+       :body ""}
+      {:status 404
+       :body "List not found."
+       :headers {}})))
