@@ -50,6 +50,15 @@
         {:type :submit
          :value "Log In"}]]]]))
 
+(defn logout-form []
+  (html
+    [:form
+     {:method "GET" :action (str "/logout" )}
+     [:div.btn-group
+      [:input.btn.btn-danger.btn-xs
+       {:type :submit
+        :value "Logout"}]]]))
+
 (defn delete-item-form [id]
   (html
     [:form
@@ -93,6 +102,8 @@
           [:link {:href "/css/bootstrap.min.css"
                   :rel :stylesheet}]]
          [:body
+          [:div.container
+           (logout-form)]
           [:div.container
            [:h1 "My Items"]
            [:div.row

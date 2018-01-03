@@ -17,6 +17,11 @@
      :headers {"Location" "/items"}
      :body ""}))
 
+(defn handle-logout [req]
+  {:status 302
+   :headers {"Location" "/"}
+   :body ""})
+
 (defn handle-index-items [req]
   (let [items (item-vec  (t/read-items))]
     {:status 200
