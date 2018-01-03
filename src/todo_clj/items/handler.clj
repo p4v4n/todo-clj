@@ -1,6 +1,6 @@
 (ns todo-clj.items.handler
   (:require [todo-clj.items.modelt :as t]
-            [todo-clj.items.view :refer [login-page items-page]]))
+            [todo-clj.items.view :refer [login-page signup-page items-page]]))
 
 (defn item-vec [items]
   (into [] (for [[k v] items] v)))
@@ -15,6 +15,18 @@
         pass (get-in req [:params "password"])]
     {:status 302
      :headers {"Location" "/items"}
+     :body ""}))
+
+(defn handle-join [req]
+  {:status 200
+   :headers {}
+   :body (signup-page)})
+
+(defn handle-signup [req]
+  (let [uname (get-in req [:params "username"])
+        upass (get-in req [:params "password"])]
+    {:status 302
+     :headers {"Location" "/"}
      :body ""}))
 
 (defn handle-logout [req]

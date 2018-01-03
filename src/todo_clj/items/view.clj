@@ -50,6 +50,30 @@
         {:type :submit
          :value "Log In"}]]]]))
 
+(defn signup-form []
+  (html5
+    [:form.form-horizontal
+     {:method "POST" :action "/signup"}
+     [:div.form-group
+      [:label.control-label.col-sm-2 {:for :name-input}
+       "Username"]
+      [:div.col-sm-10
+       [:input#name-input.form-control
+        {:name :username
+         :placeholder "username"}]]]
+     [:div.form-group
+      [:label.control-label.col-sm-2 {:for :pass-input}
+       "Password"]
+      [:div.col-sm-10
+       [:input#pass-input.form-control
+        {:name :password
+         :placeholder "password"}]]]
+     [:div.form-group
+      [:div.col-sm-offset-2.col-sm-10
+       [:input.btn.btn-primary
+        {:type :submit
+         :value "Signup"}]]]]))
+
 (defn logout-form []
   (html
     [:form
@@ -58,6 +82,16 @@
       [:input.btn.btn-danger.btn-xs
        {:type :submit
         :value "Logout"}]]]))
+
+(defn join-form []
+  (html
+    [:form
+     {:method "GET" :action (str "/join" )}
+     [:div.btn-group.col-sm-10
+      [:input.btn.btn-xs
+       {:type :submit
+        :value "Join"}]]]))
+
 
 (defn delete-item-form [id]
   (html
@@ -91,7 +125,21 @@
          [:body
           [:div.col-sm-6
            [:h2 "Welcome"]
-           (login-form)]]))
+           (login-form)
+           (join-form)]]))
+
+(defn signup-page []
+  (html5 {:lang :en}
+         [:head
+          [:title "todo-signup"]
+          [:meta {:name :viewport
+                  :content "width=device-width, initial-scale=1.0"}]
+          [:link {:href "/css/bootstrap.min.css"
+                  :rel :stylesheet}]]
+         [:body
+          [:div.col-sm-6
+           [:h2 "Signup"]
+           (signup-form)]]))
 
 (defn items-page [items]
   (html5 {:lang :en}

@@ -6,7 +6,9 @@
                                             handle-update-item
                                             handle-login-page
                                             handle-login
-                                            handle-logout]])
+                                            handle-logout
+                                            handle-join
+                                            handle-signup]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -20,6 +22,8 @@
 (defroutes routes
   (GET "/" [] handle-login-page)
   (POST "/login" [] handle-login)
+  (GET "/join" [] handle-join)
+  (POST "/signup" [] handle-signup)
   (GET "/logout" [] handle-logout)
   (ANY "/request" [] handle-dump)
   (GET "/items" [] handle-index-items)
