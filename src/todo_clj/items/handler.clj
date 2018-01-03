@@ -10,6 +10,13 @@
    :headers {}
    :body (login-page)})
 
+(defn handle-login [req]
+  (let [name (get-in req [:params "username"])
+        pass (get-in req [:params "password"])]
+    {:status 302
+     :headers {"Location" "/items"}
+     :body ""}))
+
 (defn handle-index-items [req]
   (let [items (item-vec  (t/read-items))]
     {:status 200
