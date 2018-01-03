@@ -3,7 +3,8 @@
             [todo-clj.items.handler :refer [handle-index-items
                                             handle-create-item
                                             handle-delete-item
-                                            handle-update-item]])
+                                            handle-update-item
+                                            handle-login-page]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -14,13 +15,8 @@
             [ring.handler.dump :refer [handle-dump]])
   (:gen-class))
 
-(defn hello [req]
-  {:status 200
-   :body "Hello!!"
-   :headers {}})
-
 (defroutes routes
-  (GET "/" [] hello)
+  (GET "/" [] handle-login-page)
   (ANY "/request" [] handle-dump)
   (GET "/items" [] handle-index-items)
   (POST "/items" [] handle-create-item)

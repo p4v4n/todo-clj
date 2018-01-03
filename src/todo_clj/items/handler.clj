@@ -1,9 +1,14 @@
 (ns todo-clj.items.handler
   (:require [todo-clj.items.modelt :as t]
-            [todo-clj.items.view :refer [items-page]]))
+            [todo-clj.items.view :refer [login-page items-page]]))
 
 (defn item-vec [items]
   (into [] (for [[k v] items] v)))
+
+(defn handle-login-page [req]
+  {:status 200
+   :headers {}
+   :body (login-page)})
 
 (defn handle-index-items [req]
   (let [items (item-vec  (t/read-items))]
