@@ -20,13 +20,19 @@
    :headers {}
    :body error})
 
+;;-------------------
+
 (defn handle-login-page [req]
   (handle-page (login-page)))
 
 (defn handle-login [req]
   (let [name (get-in req [:params "username"])
-        pass (get-in req [:params "password"])]
-    (handle-redirect "/items")))
+        pass (get-in req [:params "password"])
+        session (:session req)]
+    (if-let [user (t/get-user-by-username-and-password name pass)]
+      (assoc (handle-redirect "/items")
+             :session (assoc session :identity (:id user)))
+      (handle-redirect "/"))))
 
 (defn handle-join [req]
   (handle-page (signup-page)))
@@ -34,10 +40,13 @@
 (defn handle-signup [req]
   (let [uname (get-in req [:params "username"])
         upass (get-in req [:params "password"])]
+    (t/create-user {:username uname :password upass})
     (handle-redirect "/")))
 
 (defn handle-logout [req]
-  (redirect "/"))
+  (let [session (:session req)]
+    (assoc (handle-redirect "/")
+           :session (dissoc session :identity))))
 
 (defn handle-index-items [req]
   (let [items (item-vec  (t/read-items))]
