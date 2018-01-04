@@ -14,9 +14,13 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
+            [ring.middleware.session :refer [wrap-session]]
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE]]
             [compojure.route :refer [not-found]]
-            [ring.handler.dump :refer [handle-dump]])
+            [ring.handler.dump :refer [handle-dump]]
+            [buddy.auth.accessrules :refer [restrict]]
+            [buddy.auth.backends.session :refer [session-backend]]
+            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]])
   (:gen-class))
 
 (defroutes routes
@@ -32,6 +36,13 @@
   (DELETE "/items/:item-id" []  handle-delete-item)
   (not-found "Page not found."))
 
+(defn is-authenticated [{user :user :as req}]
+  (not (nil? user)))
+
+(defn wrap-user [handler]
+  (fn [{user-id :identity :as req}]
+    (handler (assoc req :user (items/get-user user-id)))))
+
 (defn wrap-server [hdlr]
   (fn [req]
     (assoc-in (hdlr req) [:headers "Server"] "todo-001")))
@@ -46,14 +57,19 @@
       (hdlr (assoc req :request-method method))
       (hdlr req))))
 
+(def backend (session-backend))
+
 (def app
   (wrap-server
-    (wrap-file-info
-      (wrap-resource
-        (wrap-params
-          (wrap-simulated-methods
-            routes))
-        "static"))))
+    (wrap-user
+      (#(wrap-authentication % backend)
+        (wrap-session
+          (wrap-file-info
+            (wrap-resource
+              (wrap-params
+                (wrap-simulated-methods
+                  routes))
+              "static")))))))
 
 (defn -main [port]
   (jetty/run-jetty app
