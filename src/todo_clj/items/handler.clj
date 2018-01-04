@@ -5,67 +5,60 @@
 (defn item-vec [items]
   (into [] (for [[k v] items] v)))
 
-(defn handle-login-page [req]
+(defn handle-redirect [path]
+  {:status 302
+   :headers {"Location" path}
+   :body ""})
+
+(defn handle-page [body]
   {:status 200
    :headers {}
-   :body (login-page)})
+   :body body})
+
+(defn handle-error [error]
+  {:status 404
+   :headers {}
+   :body error})
+
+(defn handle-login-page [req]
+  (handle-page (login-page)))
 
 (defn handle-login [req]
   (let [name (get-in req [:params "username"])
         pass (get-in req [:params "password"])]
-    {:status 302
-     :headers {"Location" "/items"}
-     :body ""}))
+    (handle-redirect "/items")))
 
 (defn handle-join [req]
-  {:status 200
-   :headers {}
-   :body (signup-page)})
+  (handle-page (signup-page)))
 
 (defn handle-signup [req]
   (let [uname (get-in req [:params "username"])
         upass (get-in req [:params "password"])]
-    {:status 302
-     :headers {"Location" "/"}
-     :body ""}))
+    (handle-redirect "/")))
 
 (defn handle-logout [req]
-  {:status 302
-   :headers {"Location" "/"}
-   :body ""})
+  (redirect "/"))
 
 (defn handle-index-items [req]
   (let [items (item-vec  (t/read-items))]
-    {:status 200
-     :headers {}
-     :body (items-page items)}))
+    (handle-page (items-page items))))
 
 (defn handle-create-item [req]
   (let [name (get-in req [:params "name"])
         description (get-in req [:params "description"])
         item-id (t/create-item name description)]
-    {:status 302
-     :headers {"Location" "/items"}
-     :body ""}))
+    (handle-redirect "/items")))
 
 (defn handle-delete-item [req]
   (let [item-id  (:item-id (:route-params req))
         exists? (t/delete-item item-id)]
     (if exists?
-      {:status 302
-       :headers {"Location" "/items"}
-       :body ""}
-      {:status 404
-       :body "List not found."
-       :headers {}})))
+      (handle-redirect "/items")
+      (handle-error "List not found"))))
 
 (defn handle-update-item [req]
   (let [item-id  (:item-id (:route-params req))
         exists? (t/update-item item-id)]
     (if exists?
-      {:status 302
-       :headers {"Location" "/items"}
-       :body ""}
-      {:status 404
-       :body "List not found."
-       :headers {}})))
+      (handle-redirect "/items")
+      (handle-error "List not found"))))
