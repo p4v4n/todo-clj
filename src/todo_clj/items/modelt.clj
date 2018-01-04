@@ -19,7 +19,6 @@
 (defn date-now []
   (.format (java.text.SimpleDateFormat. "MM/dd/yyyy") (new java.util.Date)))
 
-
 ;;------------------Users db
 
 (defn create-user [user]
@@ -33,14 +32,11 @@
 (defn get-user [user-id]
   (get @user-db user-id))
 
-;;gets user-id given user-name and pass
 (defn get-user-by-username-and-password [username password]
-  (prn username password)
   (->> (vals @user-db)
        (filter #(and (= username (:username %))
                      (hashers/check password (:password-hash %))))
-       first
-       :id))
+       first))
 
 ;;-------------------Items db
 

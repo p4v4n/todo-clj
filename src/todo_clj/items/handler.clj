@@ -49,8 +49,10 @@
            :session (dissoc session :identity))))
 
 (defn handle-index-items [req]
-  (let [items (item-vec  (t/read-items))]
-    (handle-page (items-page items))))
+  (if (get-in req [:session :identity])
+    (let [items (item-vec  (t/read-items))]
+      (handle-page (items-page items)))
+    (handle-redirect "/")))
 
 (defn handle-create-item [req]
   (let [name (get-in req [:params "name"])

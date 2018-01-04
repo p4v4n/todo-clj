@@ -36,9 +36,6 @@
   (DELETE "/items/:item-id" []  handle-delete-item)
   (not-found "Page not found."))
 
-(defn is-authenticated [{user :user :as req}]
-  (not (nil? user)))
-
 (defn wrap-user [handler]
   (fn [{user-id :identity :as req}]
     (handler (assoc req :user (items/get-user user-id)))))
