@@ -86,7 +86,7 @@
 (defn logout-form []
   (html
     [:form
-     {:method "GET" :action (str "/logout" )}
+     {:method "GET" :action (str "/logout" ) :style "margin:10px;"}
      [:div.btn-group
       [:input.btn.btn-dark.btn-xs
        {:type :submit
@@ -151,7 +151,7 @@
           [:div.container {:style "text-align:right;"}
            (logout-form)]
           [:div.container
-           [:h1 "My Items"]
+           [:h1 {:style "text-align:center;"} "My Items"]
            [:div.row
             (if (seq items)
               [:table.table.table-stripped
@@ -168,7 +168,7 @@
                    [:td (h (:name i))]
                    [:td (h (:description i))]
                    [:td (update-item-form (:id i) (:checked i))]])]]
-              [:div.col-sm-offset-1 "There are no items."])]
+              [:h5 "There are no items."])]
            [:div.col-sm-6
             [:h2 "Create a New Item"]
             (new-item)]]
