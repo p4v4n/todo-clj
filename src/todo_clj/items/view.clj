@@ -63,8 +63,8 @@
     [:form.form-horizontal
      {:method "POST" :action "/signup"}
      [:div.form-group
-      [:label.control-label.col-sm-2 {:for :name-input}]
-      "Username"
+      [:label.control-label.col-sm-2 {:for :name-input}
+       "Username"]
       [:div.col-sm-10
        [:input#name-input.form-control
         {:name :username
