@@ -23,7 +23,10 @@
 ;;-------------------
 
 (defn handle-login-page [req]
-  (handle-page (login-page)))
+  (let [identity (get-in req [:session :identity])]
+    (if identity
+      (handle-redirect "/items")
+      (handle-page (login-page)))))
 
 (defn handle-login [req]
   (let [name (get-in req [:params "username"])
