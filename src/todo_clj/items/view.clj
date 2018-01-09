@@ -26,6 +26,12 @@
         {:type :submit
          :value "Create Item"}]]]]))
 
+(defn join-link []
+  (html
+    [:a.btn.btn-primary.btn-block
+     {:href "/join" :style "margin-top:10px;"}
+     "Signup"]))
+
 (defn login-form []
   (html5
     [:form.form-horizontal
@@ -43,20 +49,22 @@
       [:div.col-sm-10
        [:input#pass-input.form-control
         {:name :password
+         :type :password
          :placeholder "password"}]]]
      [:div.form-group
       [:div.col-sm-offset-2.col-sm-10
-       [:input.btn.btn-primary
+       [:input.btn.btn-success.btn-block
         {:type :submit
-         :value "Log In"}]]]]))
+         :value "Log In"}]]
+      [:div.col-sm-10 (join-link)]]]))
 
 (defn signup-form []
   (html5
     [:form.form-horizontal
      {:method "POST" :action "/signup"}
      [:div.form-group
-      [:label.control-label.col-sm-2 {:for :name-input}
-       "Username"]
+      [:label.control-label.col-sm-2 {:for :name-input}]
+      "Username"
       [:div.col-sm-10
        [:input#name-input.form-control
         {:name :username
@@ -67,10 +75,11 @@
       [:div.col-sm-10
        [:input#pass-input.form-control
         {:name :password
+         :type :password
          :placeholder "password"}]]]
      [:div.form-group
       [:div.col-sm-offset-2.col-sm-10
-       [:input.btn.btn-primary
+       [:input.btn.btn-outline-primary.btn-block
         {:type :submit
          :value "Signup"}]]]]))
 
@@ -79,19 +88,9 @@
     [:form
      {:method "GET" :action (str "/logout" )}
      [:div.btn-group
-      [:input.btn.btn-danger.btn-xs
+      [:input.btn.btn-dark.btn-xs
        {:type :submit
         :value "Logout"}]]]))
-
-(defn join-form []
-  (html
-    [:form
-     {:method "GET" :action (str "/join" )}
-     [:div.btn-group.col-sm-10
-      [:input.btn.btn-xs
-       {:type :submit
-        :value "Join"}]]]))
-
 
 (defn delete-item-form [id]
   (html
@@ -125,8 +124,7 @@
          [:body
           [:div.col-sm-6
            [:h2 "Welcome"]
-           (login-form)
-           (join-form)]]))
+           (login-form)]]))
 
 (defn signup-page []
   (html5 {:lang :en}
@@ -150,7 +148,7 @@
           [:link {:href "/css/bootstrap.min.css"
                   :rel :stylesheet}]]
          [:body
-          [:div.container
+          [:div.container {:style "text-align:right;"}
            (logout-form)]
           [:div.container
            [:h1 "My Items"]
