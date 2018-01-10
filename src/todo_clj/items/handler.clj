@@ -53,26 +53,30 @@
 
 (defn handle-index-items [req]
   (if (get-in req [:session :identity])
-    (let [items (item-vec  (t/read-items))]
+    (let [user-id (get-in req [:session :identity])
+          items (item-vec  (t/read-items user-id))]
       (handle-page (items-page items)))
     (handle-redirect "/")))
 
 (defn handle-create-item [req]
   (let [name (get-in req [:params "name"])
         description (get-in req [:params "description"])
-        item-id (t/create-item name description)]
+        user-id (get-in req [:session :identity])
+        item-id (t/create-item name description user-id)]
     (handle-redirect "/items")))
 
 (defn handle-delete-item [req]
   (let [item-id  (:item-id (:route-params req))
-        exists? (t/delete-item item-id)]
+        user-id (get-in req [:session :identity])
+        exists? (t/delete-item item-id user-id)]
     (if exists?
       (handle-redirect "/items")
       (handle-error "List not found"))))
 
 (defn handle-update-item [req]
   (let [item-id  (:item-id (:route-params req))
-        exists? (t/update-item item-id)]
+        user-id (get-in req [:session :identity])
+        exists? (t/update-item item-id user-id)]
     (if exists?
       (handle-redirect "/items")
       (handle-error "List not found"))))

@@ -40,21 +40,22 @@
 
 ;;-------------------Items db
 
-(defn create-item [name description]
-  (if (and (name-valid? name) (description-valid? description))
+(defn create-item [name description user-id]
+  (if (and (name-valid? name)
+           (description-valid? description))
     (let [uid (generate-uuid)]
-      (swap! t-db assoc uid
+      (swap! t-db update user-id assoc uid
              {:name name
               :description description
               :checked false
               :date (date-now)
               :id uid}))))
 
-(defn update-item [id]
-  (swap! t-db update-in [id :checked] not))
+(defn update-item [id user-id]
+  (swap! t-db update-in [user-id id :checked] not))
 
-(defn delete-item [id]
-  (swap! t-db dissoc id))
+(defn delete-item [id user-id]
+  (swap! t-db update user-id dissoc id))
 
-(defn read-items []
-  (deref t-db))
+(defn read-items [user-id]
+  (get (deref t-db) user-id))
