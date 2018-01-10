@@ -38,6 +38,10 @@
                      (hashers/check password (:password-hash %))))
        first))
 
+(defn username-exists? [username]
+  (->> (vals @user-db)
+       (filter #(= username (:username %)))
+       not-empty))
 ;;-------------------Items db
 
 (defn create-item [name description user-id]

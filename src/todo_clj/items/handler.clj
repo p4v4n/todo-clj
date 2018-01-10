@@ -43,8 +43,10 @@
 (defn handle-signup [req]
   (let [uname (get-in req [:params "username"])
         upass (get-in req [:params "password"])]
-    (t/create-user {:username uname :password upass})
-    (handle-redirect "/")))
+    (if  (not (or (empty? uname) (empty? upass) (t/username-exists? uname)))
+      (do (t/create-user {:username uname :password upass})
+          (handle-redirect "/"))
+      (handle-redirect "/join"))))
 
 (defn handle-logout [req]
   (let [session (:session req)]
