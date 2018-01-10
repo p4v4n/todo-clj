@@ -11,5 +11,6 @@
                  [com.h2database/h2 "1.4.196"]
                  [buddy "2.0.0"]]
   :main todo-clj.core
+  :plugins [[lein-kibit "0.1.5"]]
   :profiles {:dev
              {:main todo-clj.core/-dev-main}})

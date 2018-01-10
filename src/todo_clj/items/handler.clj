@@ -3,7 +3,7 @@
             [todo-clj.items.view :refer [login-page signup-page items-page]]))
 
 (defn item-vec [items]
-  (into [] (for [[k v] items] v)))
+  (vec (for [[k v] items] v)))
 
 (defn handle-redirect [path]
   {:status 302
@@ -43,7 +43,7 @@
 (defn handle-signup [req]
   (let [uname (get-in req [:params "username"])
         upass (get-in req [:params "password"])]
-    (if  (not (or (empty? uname) (empty? upass) (t/username-exists? uname)))
+    (if-not (or (empty? uname) (empty? upass) (t/username-exists? uname))
       (do (t/create-user {:username uname :password upass})
           (handle-redirect "/"))
       (handle-redirect "/join"))))
