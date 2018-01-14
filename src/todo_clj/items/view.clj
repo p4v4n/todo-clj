@@ -85,12 +85,10 @@
 
 (defn logout-form []
   (html
-    [:form
-     {:method "GET" :action (str "/logout" ) :style "margin:10px;"}
-     [:div.btn-group
-      [:input.btn.btn-dark.btn-xs
-       {:type :submit
-        :value "Logout"}]]]))
+    [:div
+     [:a.btn.btn-dark
+      {:href "/logout" :style "margin-top:10px;"}
+      "Logout"]]))
 
 (defn delete-item-form [id]
   (html
@@ -109,9 +107,13 @@
     [:form
      {:method "POST" :action (str "/update/" id)}
      [:div.btn-group
-      [:input.btn.btn-xs
-       {:type :submit
-        :value (str checked)}]]]))
+      (if (= checked true)
+        [:input.btn.btn-success.btn-xs
+         {:type :submit
+          :value (str checked)}]
+        [:input.btn.btn-xs
+         {:type :submit
+          :value (str checked)}])]]))
 
 (defn login-page []
   (html5 {:lang :en}
@@ -139,7 +141,7 @@
            [:h2 "Signup"]
            (signup-form)]]))
 
-(defn items-page [items]
+(defn items-page [user-name items]
   (html5 {:lang :en}
          [:head
           [:title "todo-app"]
@@ -148,10 +150,11 @@
           [:link {:href "/css/bootstrap.min.css"
                   :rel :stylesheet}]]
          [:body
-          [:div.container {:style "text-align:right;"}
-           (logout-form)]
           [:div.container
-           [:h1 {:style "text-align:center;"} "My Items"]
+           [:div {:style "text-align:right;"} (logout-form)]
+           [:div [:h2 (str "Hello " user-name)]]]
+          [:div.container
+           [:h1 {:style "text-align:center;"} "Todo-List"]
            [:div.row
             (if (seq items)
               [:table.table.table-stripped
