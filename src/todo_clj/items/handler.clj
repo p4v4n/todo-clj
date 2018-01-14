@@ -56,8 +56,9 @@
 (defn handle-index-items [req]
   (if (get-in req [:session :identity])
     (let [user-id (get-in req [:session :identity])
+          user-name (:username (t/get-user user-id))
           items (item-vec  (t/read-items user-id))]
-      (handle-page (items-page items)))
+      (handle-page (items-page user-name items)))
     (handle-redirect "/")))
 
 (defn handle-create-item [req]
