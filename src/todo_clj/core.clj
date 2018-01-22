@@ -63,9 +63,11 @@
         (wrap-session
           (wrap-file-info
             (wrap-resource
-              (wrap-params
-                (wrap-simulated-methods
-                  routes))
+              (wrap-resource
+                (wrap-params
+                  (wrap-simulated-methods
+                    routes))
+                "public")
               "static")))))))
 
 (defn -main [port]
