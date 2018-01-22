@@ -152,7 +152,7 @@
          [:body
           [:div.container
            [:div {:style "text-align:right;"} (logout-form)]
-           [:div [:h2 (str "Hello " user-name)]]]
+           [:div#hello [:h2 (str "Hello " user-name)]]]
           [:div.container
            [:h1 {:style "text-align:center;"} "Todo-List"]
            [:div.row
@@ -176,4 +176,7 @@
             [:h2 "Create a New Item"]
             (new-item)]]
           [:script {:src "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min/js"}]
-          [:script {:src "/js/bootstrap.min.js"}]]))
+          [:script {:src "/js/bootstrap.min.js"}]
+          [:script {:type "text/javascript"
+                    :src "/js/app.js"}]]
+         ))
