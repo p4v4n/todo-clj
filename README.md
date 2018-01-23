@@ -2,9 +2,15 @@
 
 A todo app for practice with web libraries in clojure.
 
-Using Ring, Composure, Hiccup, H2. 
+Using Ring, Composure, Hiccup. 
 
 ## Usage
+
+Build the cljs files with 
+
+`lein cljsbuild once`
+
+and then start the server with
 
 `lein run 8000`
 
